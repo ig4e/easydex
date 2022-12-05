@@ -1,0 +1,187 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator nestgraphql {
+  provider = "node node_modules/prisma-nestjs-graphql"
+  output   = "../src/@generated"
+}
+
+model Manga {
+  id                     String                          @id @default(uuid()) @map("_id")
+  dexId                  String                          @unique
+  covers                 MangaCover[]
+  title                  MangaTitle
+  altTitles              String[]
+  description            MangaDescription
+  links                  MangaExternalLinks
+  originalLanguage       OriginalLanguageType?
+  publicationDemographic MangaPublicationDemographicType?
+  status                 MangaStatus
+  releaseYear            Int?
+  contentRating          MangaContentRating?
+  tags                   MangaTag[]                      @relation(fields: [tagIDs], references: [id])
+  type                   MangaType                       @default(MANGA)
+  version                Int
+  mcreatedAt             DateTime
+  mupdatedAt             DateTime
+  eupdatedAt             DateTime                        @updatedAt
+  ecreatedAt             DateTime                        @default(now())
+  tagIDs                 String[]
+}
+
+model MangaCover {
+  id         String               @id @default(uuid()) @map("_id")
+  dexId      String               @unique
+  type       MangaCoverType       @default(COVER_ART)
+  locale     OriginalLanguageType
+  fileName   String
+  volume     Float
+  version    Int
+  manga      Manga                @relation(fields: [mangaId], references: [id])
+  mangaId    String
+  mcreatedAt DateTime
+  mupdatedAt DateTime
+  eupdatedAt DateTime             @updatedAt
+  ecreatedAt DateTime             @default(now())
+}
+
+model MangaTag {
+  id       String            @id @default(uuid()) @map("_id")
+  dexId    String            @unique
+  name     MangaTagName
+  group    MangaTagGroupType
+  Manga    Manga[]           @relation(fields: [mangaIDs], references: [id])
+  mangaIDs String[]
+}
+
+type MangaTagName {
+  en String
+}
+
+enum MangaPublicationDemographicType {
+  SHOUNEN
+  SHOUJO
+  JOSEI
+  SEINEN
+}
+
+enum MangaTagGroupType {
+  CONTENT
+  FORMAT
+  GENRE
+  THEME
+}
+
+enum MangaCoverType {
+  COVER_ART
+}
+
+type MangaTitle {
+  en    String?
+  ja    String?
+  ko    String?
+  zh    String?
+  zh_hk String?
+  ja_ro String?
+  ko_ro String?
+  zh_ro String?
+}
+
+type MangaDescription {
+  en String?
+}
+
+type MangaExternalLinks {
+  nu    String?
+  al    String?
+  ap    String?
+  bw    String?
+  kt    String?
+  mu    String?
+  amz   String?
+  cdj   String?
+  ebj   String?
+  mal   String?
+  raw   String?
+  engtl String?
+}
+
+enum MangaContentRating {
+  SAFE
+  SUGGESTIVE
+  EROTICA
+  PORNOGRAPHIC
+}
+
+enum MangaStatus {
+  ONGOING
+  COMPLETED
+  HIATUS
+  CANCELLED
+}
+
+enum OriginalLanguageType {
+  JA
+  KO
+  ZH
+  ZH_hk
+  EN
+  AR
+  AZ
+  BN
+  BG
+  MY
+  CA
+  HR
+  CS
+  DA
+  NL
+  EO
+  ET
+  TL
+  FI
+  FR
+  DE
+  EL
+  HE
+  HI
+  HU
+  ID
+  IT
+  KK
+  LA
+  LT
+  MS
+  MN
+  NE
+  NO
+  FA
+  PL
+  PT
+  PT_BR
+  RO
+  RU
+  SR
+  SK
+  ES
+  ES_LA
+  SV
+  TA
+  TH
+  TR
+  UK
+  VI
+}
+
+enum MangaType {
+  MANGA
+}
