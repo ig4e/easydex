@@ -16,42 +16,42 @@ generator nestgraphql {
 }
 
 model Manga {
-  id                     String                          @id @default(uuid()) @map("_id")
-  dexId                  String                          @unique
+  id                     String                           @id @default(uuid()) @map("_id")
+  dexId                  String                           @unique
   covers                 MangaCover[]
   title                  MangaTitle
   altTitles              String[]
   description            MangaDescription
-  links                  MangaExternalLinks
+  links                  MangaExternalLinks?
   originalLanguage       OriginalLanguageType?
   publicationDemographic MangaPublicationDemographicType?
   status                 MangaStatus
   releaseYear            Int?
   contentRating          MangaContentRating?
-  tags                   MangaTag[]                      @relation(fields: [tagIDs], references: [id])
-  type                   MangaType                       @default(MANGA)
+  tags                   MangaTag[]                       @relation(fields: [tagIDs], references: [id])
+  type                   MangaType                        @default(MANGA)
   version                Int
   mcreatedAt             DateTime
   mupdatedAt             DateTime
-  eupdatedAt             DateTime                        @updatedAt
-  ecreatedAt             DateTime                        @default(now())
+  eupdatedAt             DateTime                         @updatedAt
+  ecreatedAt             DateTime                         @default(now())
   tagIDs                 String[]
 }
 
 model MangaCover {
-  id         String               @id @default(uuid()) @map("_id")
-  dexId      String               @unique
-  type       MangaCoverType       @default(COVER_ART)
-  locale     OriginalLanguageType
+  id         String                @id @default(uuid()) @map("_id")
+  dexId      String                @unique
+  type       MangaCoverType        @default(COVER_ART)
+  locale     OriginalLanguageType?
   fileName   String
   volume     Float
   version    Int
-  manga      Manga                @relation(fields: [mangaId], references: [id])
+  manga      Manga                 @relation(fields: [mangaId], references: [id])
   mangaId    String
   mcreatedAt DateTime
   mupdatedAt DateTime
-  eupdatedAt DateTime             @updatedAt
-  ecreatedAt DateTime             @default(now())
+  eupdatedAt DateTime              @updatedAt
+  ecreatedAt DateTime              @default(now())
 }
 
 model MangaTag {
@@ -133,7 +133,7 @@ enum OriginalLanguageType {
   JA
   KO
   ZH
-  ZH_hk
+  ZH_HK
   EN
   AR
   AZ

@@ -5,7 +5,7 @@ import { MangaCoverUpdateManyWithoutMangaNestedInput } from '../manga-cover/mang
 import { MangaTitleUpdateEnvelopeInput } from '../manga-title/manga-title-update-envelope.input';
 import { MangaUpdatealtTitlesInput } from './manga-updatealt-titles.input';
 import { MangaDescriptionUpdateEnvelopeInput } from '../manga-description/manga-description-update-envelope.input';
-import { MangaExternalLinksUpdateEnvelopeInput } from '../manga-external-links/manga-external-links-update-envelope.input';
+import { MangaExternalLinksNullableUpdateEnvelopeInput } from '../prisma/manga-external-links-nullable-update-envelope.input';
 import { NullableEnumOriginalLanguageTypeFieldUpdateOperationsInput } from '../prisma/nullable-enum-original-language-type-field-update-operations.input';
 import { NullableEnumMangaPublicationDemographicTypeFieldUpdateOperationsInput } from '../prisma/nullable-enum-manga-publication-demographic-type-field-update-operations.input';
 import { EnumMangaStatusFieldUpdateOperationsInput } from '../prisma/enum-manga-status-field-update-operations.input';
@@ -34,8 +34,8 @@ export class MangaUpdateWithoutTagsInput {
     @Field(() => MangaDescriptionUpdateEnvelopeInput, {nullable:true})
     description?: MangaDescriptionUpdateEnvelopeInput;
 
-    @Field(() => MangaExternalLinksUpdateEnvelopeInput, {nullable:true})
-    links?: MangaExternalLinksUpdateEnvelopeInput;
+    @Field(() => MangaExternalLinksNullableUpdateEnvelopeInput, {nullable:true})
+    links?: MangaExternalLinksNullableUpdateEnvelopeInput;
 
     @Field(() => NullableEnumOriginalLanguageTypeFieldUpdateOperationsInput, {nullable:true})
     originalLanguage?: NullableEnumOriginalLanguageTypeFieldUpdateOperationsInput;

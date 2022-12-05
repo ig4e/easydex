@@ -2,7 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 import { EnumMangaCoverTypeFieldUpdateOperationsInput } from '../prisma/enum-manga-cover-type-field-update-operations.input';
-import { EnumOriginalLanguageTypeFieldUpdateOperationsInput } from '../prisma/enum-original-language-type-field-update-operations.input';
+import { NullableEnumOriginalLanguageTypeFieldUpdateOperationsInput } from '../prisma/nullable-enum-original-language-type-field-update-operations.input';
 import { FloatFieldUpdateOperationsInput } from '../prisma/float-field-update-operations.input';
 import { IntFieldUpdateOperationsInput } from '../prisma/int-field-update-operations.input';
 import { MangaUpdateOneRequiredWithoutCoversNestedInput } from '../manga/manga-update-one-required-without-covers-nested.input';
@@ -17,8 +17,8 @@ export class MangaCoverUpdateInput {
     @Field(() => EnumMangaCoverTypeFieldUpdateOperationsInput, {nullable:true})
     type?: EnumMangaCoverTypeFieldUpdateOperationsInput;
 
-    @Field(() => EnumOriginalLanguageTypeFieldUpdateOperationsInput, {nullable:true})
-    locale?: EnumOriginalLanguageTypeFieldUpdateOperationsInput;
+    @Field(() => NullableEnumOriginalLanguageTypeFieldUpdateOperationsInput, {nullable:true})
+    locale?: NullableEnumOriginalLanguageTypeFieldUpdateOperationsInput;
 
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     fileName?: StringFieldUpdateOperationsInput;

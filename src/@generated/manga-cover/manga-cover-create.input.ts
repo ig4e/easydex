@@ -18,8 +18,8 @@ export class MangaCoverCreateInput {
     @Field(() => MangaCoverType, {nullable:true})
     type?: keyof typeof MangaCoverType;
 
-    @Field(() => OriginalLanguageType, {nullable:false})
-    locale!: keyof typeof OriginalLanguageType;
+    @Field(() => OriginalLanguageType, {nullable:true})
+    locale?: keyof typeof OriginalLanguageType;
 
     @Field(() => String, {nullable:false})
     fileName!: string;

@@ -5,7 +5,7 @@ import { MangaCoverListRelationFilter } from '../manga-cover/manga-cover-list-re
 import { MangaTitleCompositeFilter } from './manga-title-composite-filter.input';
 import { StringNullableListFilter } from '../prisma/string-nullable-list-filter.input';
 import { MangaDescriptionCompositeFilter } from '../prisma/manga-description-composite-filter.input';
-import { MangaExternalLinksCompositeFilter } from '../prisma/manga-external-links-composite-filter.input';
+import { MangaExternalLinksNullableCompositeFilter } from '../prisma/manga-external-links-nullable-composite-filter.input';
 import { EnumOriginalLanguageTypeNullableFilter } from '../prisma/enum-original-language-type-nullable-filter.input';
 import { EnumMangaPublicationDemographicTypeNullableFilter } from '../prisma/enum-manga-publication-demographic-type-nullable-filter.input';
 import { EnumMangaStatusFilter } from '../prisma/enum-manga-status-filter.input';
@@ -46,8 +46,8 @@ export class MangaWhereInput {
     @Field(() => MangaDescriptionCompositeFilter, {nullable:true})
     description?: MangaDescriptionCompositeFilter;
 
-    @Field(() => MangaExternalLinksCompositeFilter, {nullable:true})
-    links?: MangaExternalLinksCompositeFilter;
+    @Field(() => MangaExternalLinksNullableCompositeFilter, {nullable:true})
+    links?: MangaExternalLinksNullableCompositeFilter;
 
     @Field(() => EnumOriginalLanguageTypeNullableFilter, {nullable:true})
     originalLanguage?: EnumOriginalLanguageTypeNullableFilter;

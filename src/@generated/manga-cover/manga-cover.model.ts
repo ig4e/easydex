@@ -19,8 +19,8 @@ export class MangaCover {
     @Field(() => MangaCoverType, {nullable:false,defaultValue:'COVER_ART'})
     type!: keyof typeof MangaCoverType;
 
-    @Field(() => OriginalLanguageType, {nullable:false})
-    locale!: keyof typeof OriginalLanguageType;
+    @Field(() => OriginalLanguageType, {nullable:true})
+    locale!: keyof typeof OriginalLanguageType | null;
 
     @Field(() => String, {nullable:false})
     fileName!: string;

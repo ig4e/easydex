@@ -35,8 +35,8 @@ export class Manga {
     @Field(() => MangaDescription, {nullable:false})
     description?: MangaDescription;
 
-    @Field(() => MangaExternalLinks, {nullable:false})
-    links?: MangaExternalLinks;
+    @Field(() => MangaExternalLinks, {nullable:true})
+    links?: MangaExternalLinks | null;
 
     @Field(() => OriginalLanguageType, {nullable:true})
     originalLanguage!: keyof typeof OriginalLanguageType | null;

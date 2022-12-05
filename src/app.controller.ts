@@ -8,7 +8,7 @@ export class AppController {
 
   @Get('/scrape')
   getHello(): string {
-    this.mangaWorker.scrapeMDTitles();
+    this.mangaWorker.startFullScrape();
     return 'done';
   }
 }

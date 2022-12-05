@@ -2,7 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { EnumMangaCoverTypeWithAggregatesFilter } from '../prisma/enum-manga-cover-type-with-aggregates-filter.input';
-import { EnumOriginalLanguageTypeWithAggregatesFilter } from '../prisma/enum-original-language-type-with-aggregates-filter.input';
+import { EnumOriginalLanguageTypeNullableWithAggregatesFilter } from '../prisma/enum-original-language-type-nullable-with-aggregates-filter.input';
 import { FloatWithAggregatesFilter } from '../prisma/float-with-aggregates-filter.input';
 import { IntWithAggregatesFilter } from '../prisma/int-with-aggregates-filter.input';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
@@ -28,8 +28,8 @@ export class MangaCoverScalarWhereWithAggregatesInput {
     @Field(() => EnumMangaCoverTypeWithAggregatesFilter, {nullable:true})
     type?: EnumMangaCoverTypeWithAggregatesFilter;
 
-    @Field(() => EnumOriginalLanguageTypeWithAggregatesFilter, {nullable:true})
-    locale?: EnumOriginalLanguageTypeWithAggregatesFilter;
+    @Field(() => EnumOriginalLanguageTypeNullableWithAggregatesFilter, {nullable:true})
+    locale?: EnumOriginalLanguageTypeNullableWithAggregatesFilter;
 
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     fileName?: StringWithAggregatesFilter;

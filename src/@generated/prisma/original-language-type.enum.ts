@@ -4,7 +4,7 @@ export enum OriginalLanguageType {
     JA = "JA",
     KO = "KO",
     ZH = "ZH",
-    ZH_hk = "ZH_hk",
+    ZH_HK = "ZH_HK",
     EN = "EN",
     AR = "AR",
     AZ = "AZ",

@@ -3,7 +3,7 @@ import { InputType } from '@nestjs/graphql';
 import { MangaTitleCreateEnvelopeInput } from '../manga-title/manga-title-create-envelope.input';
 import { MangaCreatealtTitlesInput } from './manga-createalt-titles.input';
 import { MangaDescriptionCreateEnvelopeInput } from '../manga-description/manga-description-create-envelope.input';
-import { MangaExternalLinksCreateEnvelopeInput } from '../manga-external-links/manga-external-links-create-envelope.input';
+import { MangaExternalLinksNullableCreateEnvelopeInput } from '../prisma/manga-external-links-nullable-create-envelope.input';
 import { OriginalLanguageType } from '../prisma/original-language-type.enum';
 import { MangaPublicationDemographicType } from '../prisma/manga-publication-demographic-type.enum';
 import { MangaStatus } from '../prisma/manga-status.enum';
@@ -31,8 +31,8 @@ export class MangaUncheckedCreateWithoutCoversInput {
     @Field(() => MangaDescriptionCreateEnvelopeInput, {nullable:false})
     description!: MangaDescriptionCreateEnvelopeInput;
 
-    @Field(() => MangaExternalLinksCreateEnvelopeInput, {nullable:false})
-    links!: MangaExternalLinksCreateEnvelopeInput;
+    @Field(() => MangaExternalLinksNullableCreateEnvelopeInput, {nullable:true})
+    links?: MangaExternalLinksNullableCreateEnvelopeInput;
 
     @Field(() => OriginalLanguageType, {nullable:true})
     originalLanguage?: keyof typeof OriginalLanguageType;
