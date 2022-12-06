@@ -15,7 +15,9 @@ export class MangaService {
   async findAll(
     filters?: MangaWhereInput,
     pagination: BasePageInput = { page: 0, perPage: 32 },
+    searchQuery?: string,
   ) {
+    const whereQuery = { ...filters };
     const pageSize = pagination.perPage
       ? pagination.perPage > 32
         ? 32
@@ -23,12 +25,27 @@ export class MangaService {
       : 32;
     const page = pagination.page || 0;
     const offset = page * pageSize;
-    console.log(pageSize);
+
+    if (searchQuery) {
+      const searchResult = await this.prisma.searchManga(searchQuery);
+      const totalPages = Math.floor(searchResult.length / pageSize);
+
+      return {
+        pageInfo: {
+          currentPage: page,
+          hasNextPage: page < totalPages,
+          lastPage: totalPages,
+          perPage: pageSize,
+          total: searchResult.length,
+        },
+        manga: searchResult.slice(offset, offset + pageSize),
+      };
+    }
 
     const totalManga = await this.prisma.manga.count({
-      where: filters as any,
+      where: whereQuery as any,
     });
-    const totalPages = Math.round(totalManga / pageSize);
+    const totalPages = Math.floor(totalManga / pageSize);
 
     const pageInfo: BasePageInfo = {
       currentPage: page,
@@ -43,9 +60,20 @@ export class MangaService {
       manga: await this.prisma.manga.findMany({
         take: pageSize,
         skip: offset,
-        include: { covers: true, tags: true },
-        where: filters as any,
+        where: whereQuery as any,
       }),
     };
+  }
+
+  async getMangaCovers(mangaId: string) {
+    return this.prisma.mangaCover.findMany({ where: { mangaId } });
+  }
+
+  async getMangaTags(mangaTagIDs: string[]) {
+    return this.prisma.mangaTag.findMany({
+      where: {
+        id: { in: mangaTagIDs },
+      },
+    });
   }
 }

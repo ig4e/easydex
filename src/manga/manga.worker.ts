@@ -2,11 +2,15 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import e from 'express';
 import { PrismaService } from 'src/prisma.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class MangaWorker {
   constructor(private readonly prisma: PrismaService) {}
 
+  @Cron(CronExpression.EVERY_WEEK, {
+    name: 'update and scrap data from md, weekly',
+  })
   async startFullScrape() {
     const orderList: {
       orderBy: string;
@@ -47,7 +51,7 @@ export class MangaWorker {
   }) {
     const LIMIT = 100;
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 8; i < 100; i++) {
       const { data: pageData } = await axios({
         url: `https://api.mangadex.org/manga?limit=${LIMIT}&offset=${
           i * LIMIT
@@ -61,7 +65,23 @@ export class MangaWorker {
       if (pageData.result === 'ok') {
         for (let manga of mangas) {
           console.log(`GOT ${manga.id}: ${manga.attributes.title.en}`);
-          if (await this.prisma.manga.count({ where: { dexId: manga.id } })) {
+
+          const mangaOutdatedOrDuplicatedCheck =
+            await this.prisma.manga.findUnique({
+              where: { dexId: manga.id },
+              select: {
+                mcreatedAt: true,
+                mupdatedAt: true,
+                version: true,
+                ecreatedAt: true,
+                eupdatedAt: true,
+              },
+            });
+
+          if (
+            mangaOutdatedOrDuplicatedCheck &&
+            mangaOutdatedOrDuplicatedCheck.version == manga.attributes.version
+          ) {
             console.log(`DUP ${manga.id}: ${manga.attributes.title.en}`);
           } else {
             const { data: covers } = await axios({
@@ -70,76 +90,87 @@ export class MangaWorker {
             console.log(`GOT ${manga.id}: ${manga.attributes.title.en} COVERS`);
 
             try {
-              const mangaDB = await this.prisma.manga.create({
-                data: {
-                  dexId: manga.id,
-                  title: {
-                    en: manga.attributes.title.en,
-                    ja: manga.attributes.title.ja,
-                    ko: manga.attributes.title.ko,
-                    zh: manga.attributes.title.zh,
-                    zh_hk: manga.attributes.title['zh-hk'],
-                    ja_ro: manga.attributes.title['ja-ro'],
-                    ko_ro: manga.attributes.title['ko-ro'],
-                    zh_ro: manga.attributes.title['zh-ro'],
-                  },
-                  links: {
-                    al: manga.attributes?.links?.al,
-                    amz: manga.attributes?.links?.amz,
-                    ap: manga.attributes?.links?.ap,
-                    bw: manga.attributes?.links?.bw,
-                    cdj: manga.attributes?.links?.cdj,
-                    ebj: manga.attributes?.links?.ebj,
-                    engtl: manga.attributes?.links?.engtl,
-                    kt: manga.attributes?.links?.kt,
-                    mal: manga.attributes?.links?.mal,
-                    mu: manga.attributes?.links?.mu,
-                    raw: manga.attributes?.links?.raw,
-                  },
-                  altTitles: [
-                    ...manga.attributes.altTitles.map(
-                      (titleObj: any) => Object.values(titleObj)[0],
-                    ),
-                    ...Object.values(manga.attributes.title),
-                  ],
-                  description: { en: manga.attributes.description.en },
-                  originalLanguage: manga.attributes?.originalLanguage
-                    ?.toUpperCase()
-                    ?.replace(/\-/g, '_'),
-                  contentRating: manga.attributes?.contentRating?.toUpperCase(),
-                  releaseYear: Number(manga.attributes.year),
-                  status: manga.attributes?.status?.toUpperCase(),
-                  mcreatedAt: new Date(manga.attributes.createdAt),
-                  mupdatedAt: new Date(manga.attributes.updatedAt),
-                  publicationDemographic:
-                    manga?.attributes?.publicationDemographic?.toUpperCase(),
-                  version: Number(manga.attributes.version),
-                  tags: {
-                    connectOrCreate: manga.attributes.tags.map((tag: any) => ({
-                      where: { dexId: tag.id },
-                      create: {
-                        dexId: tag.id,
-                        name: { en: tag.attributes.name.en },
-                        group: tag.attributes.group.toUpperCase(),
-                      },
-                    })),
-                  },
-                },
-              });
+              const mangaDBCreateInputData = {
+                covers: {
+                  connectOrCreate: covers.data.map((cover) => {
+                    const coverData = {
+                      dexId: cover.id,
+                      fileName: cover.attributes.fileName,
+                      locale: cover.attributes.locale
+                        ?.toUpperCase()
+                        ?.replace(/\-/g, '_'),
+                      version: Number(cover.attributes.version) || 0,
+                      volume: Number(cover.attributes.volume) || 0,
+                      mcreatedAt: new Date(cover.attributes.createdAt),
+                      mupdatedAt: new Date(cover.attributes.updatedAt),
+                    };
 
-              await this.prisma.mangaCover.createMany({
-                data: covers.data.map((cover) => ({
-                  mangaId: mangaDB.id,
-                  dexId: cover.id,
-                  fileName: cover.attributes.fileName,
-                  locale: cover.attributes.locale
-                    ?.toUpperCase()
-                    ?.replace(/\-/g, '_'),
-                  version: Number(cover.attributes.version) || 0,
-                  volume: Number(cover.attributes.volume) || 0,
-                  mcreatedAt: new Date(cover.attributes.createdAt),
-                  mupdatedAt: new Date(cover.attributes.updatedAt),
-                })),
+                    return {
+                      create: coverData,
+                      where: { dexId: coverData.dexId },
+                    };
+                  }),
+                },
+                dexId: manga.id,
+                title: {
+                  en: manga.attributes.title.en,
+                  ja: manga.attributes.title.ja,
+                  ko: manga.attributes.title.ko,
+                  zh: manga.attributes.title.zh,
+                  zh_hk: manga.attributes.title['zh-hk'],
+                  ja_ro: manga.attributes.title['ja-ro'],
+                  ko_ro: manga.attributes.title['ko-ro'],
+                  zh_ro: manga.attributes.title['zh-ro'],
+                },
+                links: {
+                  al: manga.attributes?.links?.al,
+                  amz: manga.attributes?.links?.amz,
+                  ap: manga.attributes?.links?.ap,
+                  bw: manga.attributes?.links?.bw,
+                  cdj: manga.attributes?.links?.cdj,
+                  ebj: manga.attributes?.links?.ebj,
+                  engtl: manga.attributes?.links?.engtl,
+                  kt: manga.attributes?.links?.kt,
+                  mal: manga.attributes?.links?.mal,
+                  mu: manga.attributes?.links?.mu,
+                  raw: manga.attributes?.links?.raw,
+                },
+                altTitles: [
+                  ...manga.attributes.altTitles.map(
+                    (titleObj: any) => Object.values(titleObj)[0],
+                  ),
+                  ...Object.values(manga.attributes.title),
+                ],
+                description: { en: manga.attributes.description.en },
+                originalLanguage: manga.attributes?.originalLanguage
+                  ?.toUpperCase()
+                  ?.replace(/\-/g, '_'),
+                contentRating: manga.attributes?.contentRating?.toUpperCase(),
+                releaseYear: Number(manga.attributes.year),
+                status: manga.attributes?.status?.toUpperCase(),
+                mcreatedAt: new Date(manga.attributes.createdAt),
+                mupdatedAt: new Date(manga.attributes.updatedAt),
+                publicationDemographic:
+                  manga?.attributes?.publicationDemographic?.toUpperCase(),
+                version: Number(manga.attributes.version),
+                tags: {
+                  connectOrCreate: manga.attributes.tags.map((tag: any) => ({
+                    where: { dexId: tag.id },
+                    create: {
+                      dexId: tag.id,
+                      name: { en: tag.attributes.name.en },
+                      group: tag.attributes.group.toUpperCase(),
+                    },
+                  })),
+                },
+              };
+
+              const mangaDB = await this.prisma.manga.upsert({
+                where: {
+                  dexId: manga.id,
+                },
+                create: mangaDBCreateInputData,
+                update: mangaDBCreateInputData,
               });
 
               console.log(
