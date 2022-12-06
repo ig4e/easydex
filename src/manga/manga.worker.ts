@@ -96,9 +96,12 @@ export class MangaWorker {
                     mu: manga.attributes?.links?.mu,
                     raw: manga.attributes?.links?.raw,
                   },
-                  altTitles: manga.attributes.altTitles.map(
-                    (titleObj: any) => Object.values(titleObj)[0],
-                  ),
+                  altTitles: [
+                    ...manga.attributes.altTitles.map(
+                      (titleObj: any) => Object.values(titleObj)[0],
+                    ),
+                    ...Object.values(manga.attributes.title),
+                  ],
                   description: { en: manga.attributes.description.en },
                   originalLanguage: manga.attributes?.originalLanguage
                     ?.toUpperCase()
