@@ -38,19 +38,16 @@ model Manga {
   tagIDs                 String[]
 }
 
-model MangaCover {
-  id         String                @id @default(uuid()) @map("_id")
-  dexId      String                @unique
+type MangaCover {
+  dexId      String                
   type       MangaCoverType        @default(COVER_ART)
   locale     OriginalLanguageType?
   fileName   String
   volume     Float
   version    Int
-  manga      Manga                 @relation(fields: [mangaId], references: [id])
-  mangaId    String
   mcreatedAt DateTime
   mupdatedAt DateTime
-  eupdatedAt DateTime              @updatedAt
+  eupdatedAt DateTime              @default(now())
   ecreatedAt DateTime              @default(now())
 }
 

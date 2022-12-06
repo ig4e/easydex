@@ -1,7 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
-import { MangaCoverOrderByRelationAggregateInput } from '../manga-cover/manga-cover-order-by-relation-aggregate.input';
+import { MangaCoverOrderByCompositeAggregateInput } from '../manga-cover/manga-cover-order-by-composite-aggregate.input';
 import { MangaTitleOrderByInput } from '../manga-title/manga-title-order-by.input';
 import { MangaDescriptionOrderByInput } from '../manga-description/manga-description-order-by.input';
 import { MangaExternalLinksOrderByInput } from '../manga-external-links/manga-external-links-order-by.input';
@@ -16,8 +16,8 @@ export class MangaOrderByWithRelationInput {
     @Field(() => SortOrder, {nullable:true})
     dexId?: keyof typeof SortOrder;
 
-    @Field(() => MangaCoverOrderByRelationAggregateInput, {nullable:true})
-    covers?: MangaCoverOrderByRelationAggregateInput;
+    @Field(() => MangaCoverOrderByCompositeAggregateInput, {nullable:true})
+    covers?: MangaCoverOrderByCompositeAggregateInput;
 
     @Field(() => MangaTitleOrderByInput, {nullable:true})
     title?: MangaTitleOrderByInput;

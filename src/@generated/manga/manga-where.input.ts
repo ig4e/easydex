@@ -1,7 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { StringFilter } from '../prisma/string-filter.input';
-import { MangaCoverListRelationFilter } from '../manga-cover/manga-cover-list-relation-filter.input';
+import { MangaCoverObjectEqualityInput } from '../prisma/manga-cover-object-equality.input';
 import { MangaTitleCompositeFilter } from './manga-title-composite-filter.input';
 import { StringNullableListFilter } from '../prisma/string-nullable-list-filter.input';
 import { MangaDescriptionCompositeFilter } from '../prisma/manga-description-composite-filter.input';
@@ -34,8 +34,8 @@ export class MangaWhereInput {
     @Field(() => StringFilter, {nullable:true})
     dexId?: StringFilter;
 
-    @Field(() => MangaCoverListRelationFilter, {nullable:true})
-    covers?: MangaCoverListRelationFilter;
+    @Field(() => [MangaCoverObjectEqualityInput], {nullable:true})
+    covers?: Array<MangaCoverObjectEqualityInput>;
 
     @Field(() => MangaTitleCompositeFilter, {nullable:true})
     title?: MangaTitleCompositeFilter;

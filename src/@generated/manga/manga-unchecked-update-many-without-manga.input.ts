@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { MangaCoverCreateInput } from '../manga-cover/manga-cover-create.input';
 import { MangaTitleUpdateEnvelopeInput } from '../manga-title/manga-title-update-envelope.input';
 import { MangaUpdatealtTitlesInput } from './manga-updatealt-titles.input';
 import { MangaDescriptionUpdateEnvelopeInput } from '../manga-description/manga-description-update-envelope.input';
@@ -20,6 +21,9 @@ export class MangaUncheckedUpdateManyWithoutMangaInput {
 
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     dexId?: StringFieldUpdateOperationsInput;
+
+    @Field(() => [MangaCoverCreateInput], {nullable:true})
+    covers?: Array<MangaCoverCreateInput>;
 
     @Field(() => MangaTitleUpdateEnvelopeInput, {nullable:true})
     title?: MangaTitleUpdateEnvelopeInput;

@@ -4,13 +4,9 @@ import { MangaCoverType } from '../prisma/manga-cover-type.enum';
 import { OriginalLanguageType } from '../prisma/original-language-type.enum';
 import { Float } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
-import { MangaCreateNestedOneWithoutCoversInput } from '../manga/manga-create-nested-one-without-covers.input';
 
 @InputType()
 export class MangaCoverCreateInput {
-
-    @Field(() => String, {nullable:true})
-    id?: string;
 
     @Field(() => String, {nullable:false})
     dexId!: string;
@@ -29,9 +25,6 @@ export class MangaCoverCreateInput {
 
     @Field(() => Int, {nullable:false})
     version!: number;
-
-    @Field(() => MangaCreateNestedOneWithoutCoversInput, {nullable:false})
-    manga!: MangaCreateNestedOneWithoutCoversInput;
 
     @Field(() => Date, {nullable:false})
     mcreatedAt!: Date | string;

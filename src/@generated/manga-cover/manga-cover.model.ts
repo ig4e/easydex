@@ -1,17 +1,12 @@
 import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
-import { ID } from '@nestjs/graphql';
 import { MangaCoverType } from '../prisma/manga-cover-type.enum';
 import { OriginalLanguageType } from '../prisma/original-language-type.enum';
 import { Float } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
-import { Manga } from '../manga/manga.model';
 
 @ObjectType()
 export class MangaCover {
-
-    @Field(() => ID, {nullable:false})
-    id!: string;
 
     @Field(() => String, {nullable:false})
     dexId!: string;
@@ -30,12 +25,6 @@ export class MangaCover {
 
     @Field(() => Int, {nullable:false})
     version!: number;
-
-    @Field(() => Manga, {nullable:false})
-    manga?: Manga;
-
-    @Field(() => String, {nullable:false})
-    mangaId!: string;
 
     @Field(() => Date, {nullable:false})
     mcreatedAt!: Date;

@@ -5,7 +5,6 @@ import { EnumMangaCoverTypeFilter } from '../prisma/enum-manga-cover-type-filter
 import { EnumOriginalLanguageTypeNullableFilter } from '../prisma/enum-original-language-type-nullable-filter.input';
 import { FloatFilter } from '../prisma/float-filter.input';
 import { IntFilter } from '../prisma/int-filter.input';
-import { MangaRelationFilter } from '../manga/manga-relation-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 
 @InputType()
@@ -19,9 +18,6 @@ export class MangaCoverWhereInput {
 
     @Field(() => [MangaCoverWhereInput], {nullable:true})
     NOT?: Array<MangaCoverWhereInput>;
-
-    @Field(() => StringFilter, {nullable:true})
-    id?: StringFilter;
 
     @Field(() => StringFilter, {nullable:true})
     dexId?: StringFilter;
@@ -40,12 +36,6 @@ export class MangaCoverWhereInput {
 
     @Field(() => IntFilter, {nullable:true})
     version?: IntFilter;
-
-    @Field(() => MangaRelationFilter, {nullable:true})
-    manga?: MangaRelationFilter;
-
-    @Field(() => StringFilter, {nullable:true})
-    mangaId?: StringFilter;
 
     @Field(() => DateTimeFilter, {nullable:true})
     mcreatedAt?: DateTimeFilter;

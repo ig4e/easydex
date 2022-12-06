@@ -1,5 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { MangaCoverCreateInput } from '../manga-cover/manga-cover-create.input';
 import { MangaTitleCreateEnvelopeInput } from '../manga-title/manga-title-create-envelope.input';
 import { MangaCreatealtTitlesInput } from './manga-createalt-titles.input';
 import { MangaDescriptionCreateEnvelopeInput } from '../manga-description/manga-description-create-envelope.input';
@@ -20,6 +21,9 @@ export class MangaCreateManyInput {
 
     @Field(() => String, {nullable:false})
     dexId!: string;
+
+    @Field(() => [MangaCoverCreateInput], {nullable:true})
+    covers?: Array<MangaCoverCreateInput>;
 
     @Field(() => MangaTitleCreateEnvelopeInput, {nullable:false})
     title!: MangaTitleCreateEnvelopeInput;

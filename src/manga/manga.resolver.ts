@@ -40,11 +40,6 @@ export class MangaResolver {
     return this.mangaService.findAll(filters, pagination, searchQuery);
   }
 
-  @ResolveField(() => [MangaCover], { name: 'covers' })
-  getMangaCovers(@Parent() manga: Manga) {
-    return this.mangaService.getMangaCovers(manga.id);
-  }
-
   @ResolveField(() => [MangaTag], { name: 'tags' })
   getMangaTags(@Parent() manga: Manga) {
     return this.mangaService.getMangaTags(manga.tagIDs);

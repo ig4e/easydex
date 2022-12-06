@@ -9,7 +9,7 @@ export class MangaService {
   constructor(private readonly prisma: PrismaService) {}
 
   async find(filters?: MangaWhereInput) {
-    return this.prisma.manga.findFirst({ where: filters });
+    return this.prisma.manga.findFirst({ where: filters as any });
   }
 
   async findAll(
@@ -65,9 +65,6 @@ export class MangaService {
     };
   }
 
-  async getMangaCovers(mangaId: string) {
-    return this.prisma.mangaCover.findMany({ where: { mangaId } });
-  }
 
   async getMangaTags(mangaTagIDs: string[]) {
     return this.prisma.mangaTag.findMany({

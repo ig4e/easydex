@@ -91,26 +91,22 @@ export class MangaWorker {
 
             try {
               const mangaDBCreateInputData = {
-                covers: {
-                  connectOrCreate: covers.data.map((cover) => {
-                    const coverData = {
-                      dexId: cover.id,
-                      fileName: cover.attributes.fileName,
-                      locale: cover.attributes.locale
-                        ?.toUpperCase()
-                        ?.replace(/\-/g, '_'),
-                      version: Number(cover.attributes.version) || 0,
-                      volume: Number(cover.attributes.volume) || 0,
-                      mcreatedAt: new Date(cover.attributes.createdAt),
-                      mupdatedAt: new Date(cover.attributes.updatedAt),
-                    };
+                covers: covers.data.map((cover: any) => {
+                  const coverData = {
+                    dexId: cover.id,
+                    fileName: cover.attributes.fileName,
+                    locale: cover.attributes.locale
+                      ?.toUpperCase()
+                      ?.replace(/\-/g, '_'),
+                    version: Number(cover.attributes.version) || 0,
+                    volume: Number(cover.attributes.volume) || 0,
+                    mcreatedAt: new Date(cover.attributes.createdAt),
+                    mupdatedAt: new Date(cover.attributes.updatedAt),
+                  };
 
-                    return {
-                      create: coverData,
-                      where: { dexId: coverData.dexId },
-                    };
-                  }),
-                },
+                  return coverData;
+                }),
+
                 dexId: manga.id,
                 title: {
                   en: manga.attributes.title.en,

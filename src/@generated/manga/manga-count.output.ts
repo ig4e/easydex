@@ -6,8 +6,5 @@ import { Int } from '@nestjs/graphql';
 export class MangaCount {
 
     @Field(() => Int, {nullable:false})
-    covers?: number;
-
-    @Field(() => Int, {nullable:false})
     tags?: number;
 }

@@ -5,7 +5,6 @@ import { EnumMangaCoverTypeFieldUpdateOperationsInput } from '../prisma/enum-man
 import { NullableEnumOriginalLanguageTypeFieldUpdateOperationsInput } from '../prisma/nullable-enum-original-language-type-field-update-operations.input';
 import { FloatFieldUpdateOperationsInput } from '../prisma/float-field-update-operations.input';
 import { IntFieldUpdateOperationsInput } from '../prisma/int-field-update-operations.input';
-import { MangaUpdateOneRequiredWithoutCoversNestedInput } from '../manga/manga-update-one-required-without-covers-nested.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 
 @InputType()
@@ -28,9 +27,6 @@ export class MangaCoverUpdateInput {
 
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     version?: IntFieldUpdateOperationsInput;
-
-    @Field(() => MangaUpdateOneRequiredWithoutCoversNestedInput, {nullable:true})
-    manga?: MangaUpdateOneRequiredWithoutCoversNestedInput;
 
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     mcreatedAt?: DateTimeFieldUpdateOperationsInput;
