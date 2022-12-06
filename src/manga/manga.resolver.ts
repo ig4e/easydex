@@ -10,8 +10,9 @@ export class MangaResolver {
   constructor(private readonly mangaService: MangaService) {}
 
   @Query(() => Manga, { name: 'manga' })
-  find() {
-    return;
+  find(@Args('filters', { type: () => MangaWhereInput, nullable: true })
+  filters?: MangaWhereInput,) {
+    return this.mangaService.find(filters);;
   }
 
   @Query(() => MangaListPage, { name: 'mangaList' })

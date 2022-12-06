@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import e from 'express';
-import { PrismaService } from 'prisma.service';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class MangaWorker {

@@ -4,13 +4,15 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MangaModule } from './manga/manga.module';
 import { AppController } from './app.controller';
 import { MangaWorker } from './manga/manga.worker';
-import { PrismaService } from 'prisma.service';
+import { PrismaService } from 'src/prisma.service';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      introspection: true,
+      cache: 'bounded',
     }),
     MangaModule,
   ],

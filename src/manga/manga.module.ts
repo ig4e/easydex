@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MangaService } from './manga.service';
 import { MangaResolver } from './manga.resolver';
-import { PrismaService } from 'prisma.service';
+import { PrismaService } from 'src/prisma.service';
 import { MangaWorker } from './manga.worker';
 
 @Module({

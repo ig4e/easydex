@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'prisma.service';
+import { PrismaService } from 'src/prisma.service';
 import { MangaWhereInput } from 'src/@generated/manga/manga-where.input';
 import { BasePageInput } from './dto/manga-list-pagination.input';
 import { BasePage, BasePageInfo, MangaListPage } from './entities/manga.entity';
@@ -8,16 +8,22 @@ import { BasePage, BasePageInfo, MangaListPage } from './entities/manga.entity';
 export class MangaService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async find(filters?: MangaWhereInput) {
+    return this.prisma.manga.findFirst({ where: filters });
+  }
+
   async findAll(
     filters?: MangaWhereInput,
     pagination: BasePageInput = { page: 0, perPage: 32 },
   ) {
-
-    const pageSize = pagination.perPage ? (pagination.perPage > 32) ? 32 : pagination.perPage : 32;
+    const pageSize = pagination.perPage
+      ? pagination.perPage > 32
+        ? 32
+        : pagination.perPage
+      : 32;
     const page = pagination.page || 0;
     const offset = page * pageSize;
-    console.log(pageSize)
-
+    console.log(pageSize);
 
     const totalManga = await this.prisma.manga.count({
       where: filters as any,
