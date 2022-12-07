@@ -3,10 +3,14 @@ import axios from 'axios';
 import e from 'express';
 import { PrismaService } from 'src/prisma.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { MeiliService } from 'src/meili.service';
 
 @Injectable()
 export class MangaWorker {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly meiliSearch: MeiliService,
+  ) {}
 
   @Cron(CronExpression.EVERY_WEEK, {
     name: 'update and scrap data from md, weekly',
@@ -168,6 +172,8 @@ export class MangaWorker {
                 create: mangaDBCreateInputData,
                 update: mangaDBCreateInputData,
               });
+
+              this.meiliSearch.index('manga').addDocuments([mangaDB]);
 
               console.log(
                 `SAVED ${manga.id}: ${manga.attributes.title.en} MANGA & COVERS`,

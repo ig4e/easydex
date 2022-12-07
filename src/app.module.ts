@@ -5,6 +5,7 @@ import { MangaModule } from './manga/manga.module';
 import { AppController } from './app.controller';
 import { MangaWorker } from './manga/manga.worker';
 import { PrismaService } from 'src/prisma.service';
+import { MeiliService } from './meili.service';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { PrismaService } from 'src/prisma.service';
     }),
     MangaModule,
   ],
-  providers: [MangaWorker, PrismaService],
+  providers: [MangaWorker, PrismaService, MeiliService],
   controllers: [AppController],
 })
 export class AppModule {}

@@ -3,10 +3,14 @@ import { PrismaService } from 'src/prisma.service';
 import { MangaWhereInput } from 'src/@generated/manga/manga-where.input';
 import { BasePageInput } from './dto/manga-list-pagination.input';
 import { BasePage, BasePageInfo, MangaListPage } from './entities/manga.entity';
+import { MeiliService } from 'src/meili.service';
 
 @Injectable()
 export class MangaService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly meiliSearch: MeiliService,
+  ) {}
 
   async find(filters?: MangaWhereInput) {
     return this.prisma.manga.findFirst({ where: filters as any });
@@ -27,18 +31,19 @@ export class MangaService {
     const offset = page * pageSize;
 
     if (searchQuery) {
-      const searchResult = await this.prisma.searchManga(searchQuery);
-      const totalPages = Math.floor(searchResult.length / pageSize);
+      const { hits, estimatedTotalHits } = await this.meiliSearch
+        .index('manga')
+        .search(searchQuery, { limit: pageSize });
 
       return {
         pageInfo: {
-          currentPage: page,
-          hasNextPage: page < totalPages,
-          lastPage: totalPages,
+          currentPage: 0,
+          lastPage: 0,
+          hasNextPage: false,
           perPage: pageSize,
-          total: searchResult.length,
+          total: estimatedTotalHits,
         },
-        manga: searchResult.slice(offset, offset + pageSize),
+        manga: hits,
       };
     }
 
@@ -64,7 +69,6 @@ export class MangaService {
       }),
     };
   }
-
 
   async getMangaTags(mangaTagIDs: string[]) {
     return this.prisma.mangaTag.findMany({

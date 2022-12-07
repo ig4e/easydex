@@ -8,7 +8,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     await this.$connect();
   }
 
-  async searchManga(query: string, limit: number = 50): Promise<Manga[]> {
+  async searchManga(query: string, limit: number = 10): Promise<Manga[]> {
     let {
       cursor: { firstBatch },
     } = (await this.$runCommandRaw({
