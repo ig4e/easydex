@@ -33,14 +33,14 @@ export class MangaService {
     if (searchQuery) {
       const { hits, estimatedTotalHits } = await this.meiliSearch
         .index('manga')
-        .search(searchQuery, { limit: pageSize });
+        .search(searchQuery, { limit: 10 });
 
       return {
         pageInfo: {
           currentPage: 0,
           lastPage: 0,
           hasNextPage: false,
-          perPage: pageSize,
+          perPage: 10,
           total: estimatedTotalHits,
         },
         manga: hits,
@@ -50,6 +50,7 @@ export class MangaService {
     const totalManga = await this.prisma.manga.count({
       where: whereQuery as any,
     });
+    
     const totalPages = Math.floor(totalManga / pageSize);
 
     const pageInfo: BasePageInfo = {
