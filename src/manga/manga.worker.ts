@@ -173,8 +173,6 @@ export class MangaWorker {
                 update: mangaDBCreateInputData,
               });
 
-              this.meiliSearch.index('manga').addDocuments([mangaDB]);
-
               console.log(
                 `SAVED ${manga.id}: ${manga.attributes.title.en} MANGA & COVERS`,
               );
