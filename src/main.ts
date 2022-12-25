@@ -7,8 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(PORT, () => console.log(PORT));
 
-  const meiliService = app.get(MeiliService);
+  /*const meiliService = app.get(MeiliService);
 
-  meiliService.onAppInit();
+  meiliService.onAppInit();*/
 }
 bootstrap();
