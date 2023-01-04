@@ -15,6 +15,11 @@ export class MangaWorker {
   @Cron(CronExpression.EVERY_WEEK, {
     name: 'update and scrap data from md, weekly',
   })
+  startWeeklyScrape() {
+    this.startFullScrape();
+    return 200;
+  }
+
   async startFullScrape() {
     const orderList: {
       orderBy: string;
